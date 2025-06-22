@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Odia-Viral GK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d0f14; /* Main Background */
+            color: #e0e0e0; /* Primary Text */
+            overflow: hidden; /* Hide scrollbars due to bubbles */
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center content vertically */
+            align-items: center; /* Center content horizontally */
+        }
+
+        /* Bubble Animation */
+        .bubbles {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .bubble {
+            position: absolute;
+            background: rgba(66, 248, 245, 0.1); /* Primary Accent Cyan with opacity */
+            border-radius: 50%;
+            animation: bubble-up 15s infinite ease-in forwards;
+            opacity: 0;
+        }
+
+        .bubble:nth-child(1) { width: 40px; height: 40px; left: 10%; animation-duration: 12s; animation-delay: 0s; }
+        .bubble:nth-child(2) { width: 60px; height: 60px; left: 20%; animation-duration: 15s; animation-delay: 1s; }
+        .bubble:nth-child(3) { width: 30px; height: 30px; left: 25%; animation-duration: 10s; animation-delay: 2s; }
+        .bubble:nth-child(4) { width: 70px; height: 70px; left: 40%; animation-duration: 18s; animation-delay: 0.5s; }
+        .bubble:nth-child(5) { width: 50px; height: 50px; left: 55%; animation-duration: 13s; animation-delay: 2.5s; }
+        .bubble:nth-child(6) { width: 80px; height: 80px; left: 70%; animation-duration: 16s; animation-delay: 1.5s; }
+        .bubble:nth-child(7) { width: 45px; height: 45px; left: 80%; animation-duration: 11s; animation-delay: 3s; }
+        .bubble:nth-child(8) { width: 65px; height: 65px; left: 90%; animation-duration: 14s; animation-delay: 0s; }
+        .bubble:nth-child(9) { width: 35px; height: 35px; left: 5%; animation-duration: 9s; animation-delay: 4s; }
+        .bubble:nth-child(10) { width: 75px; height: 75px; left: 30%; animation-duration: 20s; animation-delay: 3.5s; }
+
+        @keyframes bubble-up {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateY(-50px) scale(1.2); opacity: 0; }
+        }
+
+        .quiz-container {
+            background-color: #1c222d; /* Top Navbar / Normal Button Background */
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            max-width: 800px;
+            width: 90%; /* Responsive width */
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .question-box {
+            background-color: #12151a;
+            border: 1px solid #42f8f5;
+            border-radius: 0.5rem; /* Adjusted from 1rem to match option buttons */
+            padding: 1.5rem; /* Adjusted padding for better visual */
+            box-shadow: 0 0 10px rgba(66, 248, 245, 0.6); /* Initial glow */
+            animation: glowing 1.8s infinite alternate; /* Apply glowing animation */
+        }
+
+        .option-button {
+            background-color: #12151a; /* Normal Button Background */
+            color: #ffffff; /* Primary Text */
+            border: 1px solid #42f8f5; /* Button Border Color */
+            border-radius: 0.5rem;
+            padding: 1rem 1.5rem;
+            text-align: left;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 5px rgba(66, 248, 245, 0.3); /* Glow Shadow */
+            font-size: 1.125rem; /* text-lg */
+            cursor: pointer; /* Indicate clickable */
+        }
+
+        .option-button:hover:not(.selected):not(.correct):not(.incorrect) {
+            background-color: rgba(66, 248, 245, 0.2); /* Slight hover effect */
+            box-shadow: 0 0 15px rgba(66, 248, 245, 0.6);
+        }
+
+        .option-button.selected {
+            /* This class will no longer be applied on initial selection, only for internal tracking if needed */
+            /* If you want a subtle visual cue for selection without glow, adjust this */
+            /* For now, leaving it empty as per user request to not glow on selection */
+        }
+
+        .option-button.correct {
+            background-color: rgba(66, 248, 245, 0.6); /* Primary Accent Cyan for correct */
+            box-shadow: 0 0 25px rgba(66, 248, 245, 1), 0 0 40px rgba(66, 248, 245, 0.8);
+            animation: glowing 1.5s infinite alternate;
+            color: #0d0f14; /* Black text for correct answer */
+            font-weight: bolder; /* Bold text for correct answer */
+        }
+
+
+        @keyframes glowing {
+            0% { box-shadow: 0 0 10px rgba(66, 248, 245, 0.6), 0 0 20px rgba(66, 248, 245, 0.4); }
+            100% { box-shadow: 0 0 20px rgba(66, 248, 245, 1), 0 0 30px rgba(66, 248, 245, 0.8); }
+        }
+
+        @keyframes glowing-red {
+            0% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.6), 0 0 20px rgba(255, 0, 0, 0.4); }
+            100% { box-shadow: 0 0 20px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.8); }
+        }
+
+        .timer-display {
+            font-size: 2.5rem; /* text-4xl */
+            font-weight: bold;
+            color: #42f8f5;
+            text-shadow: 0 0 10px rgba(66, 248, 245, 0.6);
+            min-width: 80px;
+            text-align: center;
+            /* Added styles for timer circle */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 80px; /* Adjust size as needed */
+            height: 80px; /* Adjust size as needed */
+            border-radius: 50%;
+            border: 3px solid #42f8f5;
+            box-shadow: 0 0 15px rgba(66, 248, 245, 0.8);
+            background-color: rgba(28, 34, 45, 0.8); /* Match navbar/button background with transparency */
+            cursor: pointer; /* Timer is clickable */
+        }
+
+        .timer-display.disabled {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .main-button {
+            background-color: #42f8f5; /* Primary Accent Cyan */
+            color: #0d0f14; /* Main Background for text on accent */
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 10px rgba(66, 248, 245, 0.6);
+            cursor: pointer;
+        }
+
+        .main-button:hover {
+            background-color: #3ff7f3; /* Accent Shade Alt */
+            box-shadow: 0 0 20px rgba(66, 248, 245, 0.8);
+        }
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #1c222d;
+            border: 2px solid #42f8f5;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 0 30px rgba(66, 248, 245, 0.8);
+            z-index: 1000;
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            color: #e0e0e0;
+        }
+
+        .message-box h3 {
+            font-size: 1.5rem;
+            color: #42f8f5;
+        }
+
+        .message-box button {
+            background-color: #42f8f5;
+            color: #0d0f14;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 10px rgba(66, 248, 245, 0.6);
+            cursor: pointer;
+        }
+
+        .message-box button:hover {
+            background-color: #3ff7f3;
+            box-shadow: 0 0 20px rgba(66, 248, 245, 0.8);
+        }
+
+        /* Responsive adjustments */
+        @media (min-width: 640px) { /* sm breakpoint */
+            .quiz-container {
+                width: 80%;
+            }
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .quiz-container {
+                width: 70%;
+            }
+        }
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .quiz-container {
+                width: 60%;
+            }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4">
+
+    <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
+    <div class="quiz-container">
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
+            <div class="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-0">Odia-Viral GK</div>
+            <div id="question-number" class="text-lg sm:text-xl font-semibold mb-4 text-secondary-description">Question 1/100</div>
+        </div>
+
+        <div class="question-box p-4 mb-6 rounded-lg">
+            <div id="question-text" class="text-xl sm:text-2xl font-bold text-white leading-relaxed text-center">
+                </div>
+        </div>
+
+        <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+            </div>
+            <script></script>
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
+            <div id="timer" class="timer-display">5</div>
+            <button id="next-button" class="main-button px-6 py-3" disabled>Next Question</button>
+        </div>
+
+    </div>
+
+    <div id="message-box" class="message-box">
+        <h3 id="message-title"></h3>
+        <p id="message-text"></p>
+        <button id="message-button">OK</button>
+    </div>
+
+    <audio id="timerSound" src="5sec.mp3" preload="auto"></audio>
+    <audio id="correctSound" src="correct.mp3" preload="auto"></audio>
+    <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+    <audio id="backgroundMusic" src="background.mp3" preload="auto" loop></audio>
+
+
+    <script>
+        // Quiz data parsed from the provided text
+        const quizData = [
+            {
+                question: "ଓଡ଼ିଶାର 'ବୋଇତ ବନ୍ଦାଣ' ଉତ୍ସବ, କେଉଁ ଦ୍ବୀପ ସହିତ ପ୍ରାଚୀନ ସାମୁଦ୍ରିକ ବାଣିଜ୍ୟର ସ୍ମୃତିଚାରଣ କରେ?",
+                options: ["ଶ୍ରୀଲଙ୍କା", "ବାଲି", "ମାଡାଗାସ୍କାର", "ଆଣ୍ଡାମାନ"],
+                answer: "ବାଲି"
+            },
+            {
+                question: "ଭାରତର କେଉଁ ରାଜ୍ୟରେ \"ଜୀବନ୍ତ ବୃକ୍ଷର ସେତୁ\" (Living Root Bridges) ଦେଖିବାକୁ ମିଳେ?",
+                options: ["ଅରୁଣାଚଳ ପ୍ରଦେଶ", "କେରଳ", "ମେଘାଳୟ", "ହିମାଚଳ ପ୍ରଦେଶ"],
+                answer: "ମେଘାଳୟ"
+            },
+            {
+                question: "କେଉଁ ଗ୍ରହ ନିଜ ଅକ୍ଷରେ ସିଧା ନ ବୁଲି ଗଡ଼ି ଗଡ଼ି ବୁଲିଥାଏ (rotates on its side)?",
+                options: ["ଶନି", "ବୃହସ୍ପତି", "ୟୁରାନସ୍ (ଅରୁଣ)", "ନେପଚୁନ୍ (ବରୁଣ)"],
+                answer: "ୟୁରାନସ୍ (ଅରୁଣ)"
+            },
+            {
+                question: "ଭାରତୀୟ ସଂସଦରେ 'ଶୂନ୍ୟକାଳ' (Zero Hour) ପ୍ରଥା କେଉଁ ଦେଶରୁ ଅଣାଯାଇଛି?",
+                options: ["ବ୍ରିଟେନ", "ଆମେରିକା", "କାନାଡା", "ଏହା ଭାରତର ନିଜସ୍ଵ ଉଦ୍ଭାବନ"],
+                answer: "ଏହା ଭାରତର ନିଜସ୍ଵ ଉଦ୍ଭାବନ"
+            },
+            {
+                question: "\"ନର୍କର ଦ୍ଵାର\" (Door to Hell) ନାମରେ ଜଣାଶୁଣା ନିରନ୍ତର ଜଳୁଥିବା ଗ୍ୟାସ କ୍ରେଟର କେଉଁ ଦେଶରେ ଅବସ୍ଥିତ?",
+                options: ["ଇରାନ", "କାଜାଖସ୍ତାନ", "ତୁର୍କମେନିସ୍ତାନ", "ଉଜବେକିସ୍ତାନ"],
+                answer: "ତୁର୍କମେନିସ୍ତାନ"
+            },
+            {
+                question: "କୋଣାର୍କ ମନ୍ଦିରର ମୁଖ୍ୟ ସ୍ଥପତି ବା କାରିଗର କିଏ ଥିଲେ ବୋଲି ବିଶ୍ୱାସ କରାଯାଏ?",
+                options: ["ସାମନ୍ତରାୟ ମହାପାତ୍ର", "ବିଶୁ ମହାରଣା", "ଅନଙ୍ଗଭୀମ ଦେବ", "ଧରମା"],
+                answer: "ବିଶୁ ମହାରଣା"
+            },
+            {
+                question: "ପୃଥିବୀର ଏକମାତ୍ର ଭାସମାନ ଜାତୀୟ ଉଦ୍ୟାନ 'କେଇବୁଲ ଲାମଜାଓ' (Keibul Lamjao) ଭାରତର କେଉଁ ହ୍ରଦରେ ଅବସ୍ଥିତ?",
+                options: ["ଚିଲିକା ହ୍ରଦ", "ଲୋକଟାକ ହ୍ରଦ", "ଡାଲ୍ ହ୍ରଦ", "ୱେମ୍ବାନାଡ ହ୍ରଦ"],
+                answer: "ଲୋକଟାକ ହ୍ରଦ"
+            },
+            {
+                question: "ହଳଦୀର ହଳଦିଆ ରଙ୍ଗ ପାଇଁ କେଉଁ ରାସାୟନିକ ଯୌଗିକ (compound) ଦାୟୀ?",
+                options: ["କର୍କ୍ୟୁମିନ୍ (Curcumin)", "ପିପେରିନ୍ (Piperine)", "କ୍ୟାପସାଇସିନ୍ (Capsaicin)", "ଲାଇକୋପିନ୍ (Lycopene)"],
+                answer: "କର୍କ୍ୟୁମିନ୍ (Curcumin)"
+            },
+            {
+                question: "ପ୍ରଥମ ଓଡ଼ିଆ ଭାବେ କିଏ ଜ୍ଞାନପୀଠ ପୁରସ୍କାର ପାଇଥିଲେ?",
+                options: ["ଫକୀର ମୋହନ ସେନାପତି", "ଗୋପୀନାଥ ମହାନ୍ତି", "ସଚ୍ଚିଦାନନ୍ଦ ରାଉତରାୟ", "ପ୍ରତିଭା ରାୟ"],
+                answer: "ଗୋପୀନାଥ ମହାନ୍ତି"
+            },
+            {
+                question: "କେଉଁ ସାମୁଦ୍ରିକ ଜୀବକୁ \"ଅମର ଜେଲିଫିସ୍\" କୁହାଯାଏ କାରଣ ଏହା ନିଜ ଜୀବନଚକ୍ରକୁ ପୁନଃ ଆରମ୍ଭ କରିପାରେ?",
+                options: ["ଷ୍ଟାରଫିସ୍", "ଅକ୍ଟୋପସ୍", "ଟୁରିଟୋପ୍‌ସିସ୍ ଡୋର୍ନି (Turritopsis dohrnii)", "ବ୍ଲୁ ୱ୍ହେଲ୍"],
+                answer: "ଟୁରିଟୋପ୍‌ସିସ୍ ଡୋର୍ନି (Turritopsis dohrnii)"
+            },
+            {
+                question: "କେଉଁ ପ୍ରାଚୀନ ଭାରତୀୟ ରାଜବଂଶ ସୁବ୍ୟବସ୍ଥିତ ସ୍ଥାନୀୟ ସ୍ୱୟଂ-ଶାସନ ପ୍ରଣାଳୀ ପାଇଁ ପ୍ରସିଦ୍ଧ ଥିଲା?",
+                options: ["ମୌର୍ଯ୍ୟ ବଂଶ", "ଗୁପ୍ତ ବଂଶ", "ଚୋଳ ବଂଶ", "କୁଶାଣ ବଂଶ"],
+                answer: "ଚୋଳ ବଂଶ"
+            },
+            {
+                question: "QR କୋଡ୍ (Quick Response Code) ର ଉଦ୍ଭାବନ କେଉଁ ଦେଶରେ ହୋଇଥିଲା?",
+                options: ["ଆମେରିକା", "ଚୀନ", "ଜାପାନ", "ଦକ୍ଷିଣ କୋରିଆ"],
+                answer: "ଜାପାନ"
+            },
+            {
+                question: "ଓଡ଼ିଶାର ପ୍ରସିଦ୍ଧ 'ପଟ୍ଟଚିତ୍ର' କଳାରେ ରଙ୍ଗ ପାଇଁ କେଉଁ ପ୍ରକାରର ଉପାଦାନ ବ୍ୟବହୃତ ହୁଏ?",
+                options: ["ରାସାୟନିକ ରଙ୍ଗ", "ଏକ୍ରିଲିକ୍ ରଙ୍ଗ", "ପ୍ରାକୃତିକ ଖଣିଜ ଓ ଗଛଲତାର ରସ", "ତୈଳ ରଙ୍ଗ"],
+                answer: "ପ୍ରାକୃତିକ ଖଣିଜ ଓ ଗଛଲତାର ରସ"
+            },
+            {
+                question: "ପୃଥିବୀର ସବୁଠାରୁ ବଡ଼ ଫୁଲ କ'ଣ, ଯାହା ପଚା ମାଂସ ପରି ଗନ୍ଧ କରେ?",
+                options: ["ସୂର୍ଯ୍ୟମୁଖୀ", "ପଦ୍ମ", "ରାଫ୍ଲେସିଆ ଆର୍ନୋଲ୍ଡି (Rafflesia arnoldii)", "ଗୋଲାପ"],
+                answer: "ରାଫ୍ଲେସିଆ ଆର୍ନୋଲ୍ଡି (Rafflesia arnoldii)"
+            },
+            {
+                question: "କଳିଙ୍ଗର ରାଜା ଖାରବେଳଙ୍କ ବିଷୟରେ ତଥ୍ୟ ମୁଖ୍ୟତଃ କେଉଁ ଶିଳାଲେଖରୁ ମିଳିଥାଏ?",
+                options: ["ଜଉଗଡ଼ ଶିଳାଲେଖ", "ଧଉଳି ଶିଳାଲେଖ", "ହାତୀଗୁମ୍ଫା ଶିଳାଲେଖ", "ଅଶୋକଙ୍କ ସ୍ତମ୍ଭଲେଖ"],
+                answer: "ହାତୀଗୁମ୍ଫା ଶିଳାଲେଖ"
+            },
+            {
+                question: "ଭାରତର ପ୍ରଥମ ବେସରକାରୀ ରକେଟର ନାମ କ'ଣ?",
+                options: ["ଅଗ୍ନି-ପି", "ବିକ୍ରମ-ଏସ୍", "ପୃଥ୍ବୀ-୩", "ବ୍ରହ୍ମୋସ-୨"],
+                answer: "ବିକ୍ରମ-ଏସ୍"
+            },
+            {
+                question: "ପୃଥିବୀର ଏକମାତ୍ର ସ୍ତନ୍ୟପାୟୀ ପ୍ରାଣୀ କିଏ ଯିଏ ପ୍ରକୃତରେ ଉଡ଼ିପାରେ?",
+                options: ["ଉଡ଼ନ୍ତା ଗୁଣ୍ଡୁଚି ମୂଷା (Flying Squirrel)", "ପେଙ୍ଗୁଇନ୍", "ବାଦୁଡ଼ି", "ଓଟପକ୍ଷୀ"],
+                answer: "ବାଦୁଡ଼ି"
+            },
+            {
+                question: "'ଲୁଣିଆ ଜଙ୍ଗଲ' ବା ମାଙ୍ଗ୍ରୋଭ୍ ପାଇଁ ପ୍ରସିଦ୍ଧ 'ଭିତରକନିକା' କେଉଁ ଦୁଇଟି ନଦୀର ମୁହାଣରେ ଅବସ୍ଥିତ?",
+                options: ["ମହାନଦୀ ଓ କାଠଯୋଡ଼ି", "ବ୍ରାହ୍ମଣୀ ଓ ବୈତରଣୀ", "ଋଷିକୂଲ୍ୟା ଓ ବଂଶଧାରା", "ସୁବର୍ଣ୍ଣରେଖା ଓ ବୁଢ଼ାବଳଙ୍ଗ"],
+                answer: "ବ୍ରାହ୍ମଣୀ ଓ ବୈତରଣୀ"
+            },
+            {
+                question: "କେଉଁ ଦେଶ ଏକମାତ୍ର ଦେଶ ଯାହାକି ଏକ ସମ୍ପୂର୍ଣ୍ଣ ମହାଦେଶକୁ ଆବୃତ କରେ?",
+                options: ["କାନାଡା", "ଭାରତ", "ବ୍ରାଜିଲ", "ଅଷ୍ଟ୍ରେଲିଆ"],
+                answer: "ଅଷ୍ଟ୍ରେଲିଆ"
+            },
+            {
+                question: "ଭାରତୀୟ ଟଙ୍କା ଚିହ୍ନ (₹) କୁ କିଏ ଡିଜାଇନ୍ କରିଥିଲେ?",
+                options: ["ରାକେଶ ଶର୍ମା", "ଉଦୟ କୁମାର ଧର୍ମଲିଙ୍ଗମ୍", "ରଘୁରାମ ରାଜନ", "ସତ୍ୟ ନାଡେଲା"],
+                answer: "ଉଦୟ କୁମାର ଧର୍ମଲିଙ୍ଗମ୍"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timerCountdown; // Timer for the 5-second answer reveal
+        const answerRevealTime = 5; // 5 seconds for answer reveal countdown
+        let selectedOption = null;
+        let backgroundMusicPlayed = false; // Flag to track if music has started
+
+        const questionNumberElement = document.getElementById('question-number');
+        const questionTextElement = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const timerElement = document.getElementById('timer');
+        const nextButton = document.getElementById('next-button');
+        const messageBox = document.getElementById('message-box');
+        const messageTitle = document.getElementById('message-title');
+        const messageText = document.getElementById('message-text');
+        const messageButton = document.getElementById('message-button');
+
+        // Audio elements
+        const timerSound = document.getElementById('timerSound');
+        const correctSound = document.getElementById('correctSound');
+        const clickSound = document.getElementById('clickSound');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+
+        // Function to attempt playing background music
+        function playBackgroundMusic() {
+            if (!backgroundMusicPlayed) {
+                backgroundMusic.play().then(() => {
+                    backgroundMusicPlayed = true;
+                    console.log("Background music started playing.");
+                }).catch(error => {
+                    console.log("Background music autoplay prevented:", error);
+                });
+            }
+        }
+
+        function showMessageBox(title, message, onOk = null) {
+            messageTitle.textContent = title;
+            messageText.textContent = message;
+            messageBox.style.display = 'flex';
+            messageButton.onclick = () => {
+                messageBox.style.display = 'none';
+                if (onOk) onOk();
+            };
+        }
+
+        // Function to start the 5-second answer reveal timer
+        function startAnswerRevealTimer() {
+            let timeLeft = answerRevealTime;
+            timerElement.textContent = timeLeft;
+            nextButton.disabled = true; // Disable next button during countdown
+
+            timerCountdown = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timerCountdown);
+                    timerCountdown = null; // Reset timerCountdown to null
+                    const currentQuestion = quizData[currentQuestionIndex];
+                    revealAnswer(selectedOption ? selectedOption.textContent : null, currentQuestion.answer); // Reveal answer after timer finishes
+                    nextButton.disabled = false; // Enable next button after answer is revealed
+                    timerElement.classList.remove('disabled'); // Re-enable timer for next question
+                }
+            }, 1000);
+        }
+
+        function loadQuestion() {
+            clearInterval(timerCountdown); // Clear any existing countdown
+            timerCountdown = null; // Reset timerCountdown to null
+            timerElement.textContent = answerRevealTime; // Reset timer display to 5
+            selectedOption = null;
+            nextButton.disabled = true;
+            optionsContainer.innerHTML = ''; // Clear previous options
+            timerElement.classList.remove('disabled'); // Ensure timer is enabled for new question
+
+            if (currentQuestionIndex >= quizData.length) {
+                showMessageBox("Quiz Completed!", `You scored ${score} out of ${quizData.length} questions.`, () => {
+                    resetQuiz();
+                });
+                return;
+            }
+
+            const currentQuestion = quizData[currentQuestionIndex];
+            questionNumberElement.textContent = `Question ${currentQuestionIndex + 1}/${quizData.length}`;
+            questionTextElement.textContent = currentQuestion.question;
+
+            // Define the labels for the options
+            const optionLabels = ['A', 'B', 'C', 'D'];
+
+            currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                // Prepend the letter label to the option text
+                button.textContent = `${optionLabels[index]}. ${option}`;
+                button.classList.add('option-button', 'w-full', 'block', 'text-left');
+                // Pass only the original option text for comparison
+                button.addEventListener('click', () => handleOptionClick(button, option, currentQuestion.answer));
+                optionsContainer.appendChild(button);
+                button.disabled = false; // Ensure options are enabled
+            });
+        }
+
+        function handleOptionClick(clickedButton, selectedAnswerOriginalText, correctAnswer) {
+            // Play background music when any option is clicked for the first time
+            playBackgroundMusic();
+
+            if (selectedOption !== null) return; // Only allow one selection per question
+
+            selectedOption = clickedButton;
+            // Removed: clickedButton.classList.add('selected'); // DO NOT highlight selected option immediately as per user request
+
+            // Disable all options after selection, so they can't change their mind
+            Array.from(optionsContainer.children).forEach(button => {
+                if (button !== clickedButton) { // Keep the selected one marked (internally by selectedOption)
+                    button.disabled = true;
+                }
+            });
+            // Do NOT start timer here. User will click the timer to start.
+        }
+
+
+        function revealAnswer(selectedAnswerTextWithLabel, correctAnswerText) {
+            const allOptionButtons = Array.from(optionsContainer.children);
+
+            // Stop and reset timer sound when answer is revealed
+            timerSound.pause();
+            timerSound.currentTime = 0;
+
+            allOptionButtons.forEach(button => {
+                // Extract original text from button by removing the "X. " prefix
+                const originalButtonText = button.textContent.substring(3);
+
+                if (originalButtonText === correctAnswerText) {
+                    button.classList.add('correct'); // Highlight correct answer
+                    correctSound.play(); // Play correct answer sound
+                } else if (selectedAnswerTextWithLabel && selectedAnswerTextWithLabel.substring(3) === originalButtonText && originalButtonText !== correctAnswerText) {
+                    button.classList.add('incorrect'); // Highlight incorrect selected answer
+                    // No need to remove 'selected' class as it's not applied on selection
+                }
+                button.disabled = true; // Ensure all buttons are disabled after reveal
+            });
+
+            // Score update only if an option was selected and it was correct
+            if (selectedOption && selectedOption.textContent.substring(3) === correctAnswerText) {
+                score++;
+                // Removed: scoreDisplay.textContent = `Score: ${score}`;
+            }
+        }
+
+        timerElement.addEventListener('click', () => {
+
+            // Prevent multiple clicks on timer for the same question or if answer is already revealed
+            if (timerCountdown !== null || !nextButton.disabled) {
+                return;
+            }
+
+            timerSound.play(); // Play timer sound
+            startAnswerRevealTimer(); // Start the countdown
+            timerElement.classList.add('disabled'); // Disable timer after click to prevent multiple clicks
+        });
+
+
+        function resetQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            // Removed: scoreDisplay.textContent = `Score: ${score}`;
+            clearInterval(timerCountdown); // Ensure timer is cleared on reset
+            timerCountdown = null; // Reset timerCountdown to null
+            loadQuestion();
+        }
+
+        nextButton.addEventListener('click', () => {
+            clickSound.play(); // Play click sound
+            currentQuestionIndex++;
+            loadQuestion();
+        });
+
+        // Initial load
+        window.onload = () => {
+            loadQuestion();
+            // Background music will now be played on the first option button click
+        };
+
+    </script>
+</body>
+</html>
