@@ -35,7 +35,7 @@
             position: absolute;
             background: rgb(255, 255, 255); /* Primary Accent Cyan with opacity */
             border-radius: 50%;
-            animation: bubble-up 15s infinite ease-in forwards;
+            animation: bubble-up 15s infinite ease-in forwards, glow 1.5s infinite alternate;
             opacity: 0;
             filter: blur(2px);
         }
@@ -103,7 +103,7 @@
             position: relative;
             z-index: 10;
             box-shadow: 0 0 10px rgba(66, 248, 245, 0.6); /* Initial glow */
-            animation: glowing 1.8s infinite alternate; /* Apply glowing animation */
+            animation: glowing-yellow 1s infinite alternate; /* Apply glowing animation */
         }
 
         .question-box {
@@ -112,34 +112,35 @@
             border-radius: 0.5rem;
             padding: 2rem; /* Adjusted padding */
             box-shadow: 0 0 10px rgba(66, 248, 245, 0.6);
-            animation: glowing 1.8s infinite alternate;
+            animation: glowing-red 1.8s infinite alternate;
         }
 
         .option-button {
             background-color: #12151a; /* Normal Button Background */
             color: #ffffff; /* Primary Text */
-            border: 1px solid #42f8f5; /* Button Border Color */
+            border: 1px solid #ff00f2; /* Button Border Color */
             border-radius: 0.5rem;
             padding: 1rem 1.5rem;
             text-align: left;
             transition: all 0.3s ease;
-            box-shadow: 0 0 5px rgba(66, 248, 245, 0.3); /* Glow Shadow */
+            box-shadow: 0 0 5px rgba(212, 1, 223, 0.932); /* Glow Shadow */
             font-size: 1.8rem; /* text-lg */
             font-weight: 600; /* semibold */
             cursor: pointer; /* Indicate clickable */
         }
 
         .option-button:hover:not(.selected):not(.correct):not(.incorrect) {
-            background-color: rgba(66, 248, 245, 0.2); /* Slight hover effect */
-            box-shadow: 0 0 15px rgba(66, 248, 245, 0.6);
+            background-color: rgb(191, 0, 255); /* Slight hover effect */
+            box-shadow: 0 0 15px rgba(142, 13, 148, 0.822);
         }
         
         .option-button.correct {
-            background-color: rgba(66, 248, 245, 0.6); /* Primary Accent Cyan for correct */
-            box-shadow: 0 0 25px rgba(66, 248, 245, 1), 0 0 40px rgba(66, 248, 245, 0.8);
+            background-color: rgb(47, 255, 0); /* Primary Accent Cyan for correct */
+            box-shadow: 0 0 25px rgb(25, 162, 6), 0 0 40px rgba(18, 150, 14, 0.8);
             animation: glowing 1.5s infinite alternate;
             color: #0d0f14; /* Black text for correct answer */
-            font-weight: bolder; /* Bold text for correct answer */
+            font-weight: 900; /* Extra bold text for correct answer */
+            
         }
 
         @keyframes glowing {
@@ -147,9 +148,13 @@
             100% { box-shadow: 0 0 20px rgba(66, 248, 245, 1), 0 0 30px rgba(66, 248, 245, 0.8); }
         }
 
+        @keyframes glowing-yellow {
+            0% { box-shadow: 0 0 10px rgba(255, 242, 0, 0.9), 0 0 20px rgba(255, 0, 0, 0.4); }
+            100% { box-shadow: 0 0 20px rgb(251, 255, 0), 0 0 30px rgba(255, 0, 0, 0.8); }
+        }
         @keyframes glowing-red {
-            0% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.6), 0 0 20px rgba(255, 0, 0, 0.4); }
-            100% { box-shadow: 0 0 20px rgba(255, 0, 0, 1), 0 0 30px rgba(255, 0, 0, 0.8); }
+            0% { box-shadow: 0 0 10px rgb(255, 0, 0), 0 0 20px rgba(255, 0, 0, 0.4); }
+            100% { box-shadow: 0 0 20px rgb(220, 3, 3), 0 0 30px rgba(255, 0, 0, 0.8); }
         }
 
         .timer-display {
@@ -477,7 +482,7 @@
                 // Prepend the letter label to the option text
                 button.textContent = `${optionLabels[index]}. ${option}`;
                 // MODIFIED: Adding font-semibold via the class list from the style tag
-                button.classList.add('option-button', 'w-full', 'block', 'text-left');
+                button.classList.add('option-button', 'w-full', 'block', 'text-left', );
                 // Pass only the original option text for comparison
                 button.addEventListener('click', () => handleOptionClick(button, option, currentQuestion.answer));
                 optionsContainer.appendChild(button);
